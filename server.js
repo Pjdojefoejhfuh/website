@@ -428,7 +428,7 @@ app.get("/api/loader/:scriptId", (req, res) => {
   const script = db.prepare("SELECT * FROM scripts WHERE id = ?").get(req.params.scriptId);
   if (!script) return res.status(404).json({ error: "Introuvable" });
 
-  const host = req.protocol + "://" + req.get("host");
+  const host = "https://" + req.get("host");
   const loader = `-- NOVA AUTH LOADER - ${script.name}
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
