@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Auth - Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-animated"></div>
+  <div class="particles" id="particles"></div>
+
+  <div id="welcomeScreen" class="welcome-screen">
+    <div class="welcome-content">
+      <div class="welcome-logo">&#128737;</div>
+      <h1 class="welcome-title">NOVA AUTH</h1>
+      <p class="welcome-sub">Bienvenue</p>
+      <div class="welcome-loader"></div>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">&#128737; NOVA AUTH</div>
+    <div class="topbar-right">
+      <span class="user-badge" id="userBadge">USER</span>
+      <button id="logoutBtn" class="btn-ghost">Deconnexion</button>
+    </div>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-page="dashboard">Dashboard</button>
+    <button class="nav-tab" data-page="scripts">Scripts</button>
+    <button class="nav-tab" data-page="keys">Keys</button>
+    <button class="nav-tab" data-page="ban">Ban User</button>
+    <button class="nav-tab" data-page="logs">Logs</button>
+  </nav>
+
+  <main class="dashboard">
+    <div class="page active" id="page-dashboard">
+      <section class="stats-row">
+        <div class="stat-card"><div class="stat-icon">&#128220;</div><div class="stat-value" id="statScripts">0</div><div class="stat-label">Scripts</div></div>
+        <div class="stat-card"><div class="stat-icon">&#128273;</div><div class="stat-value" id="statKeys">0</div><div class="stat-label">Keys</div></div>
+        <div class="stat-card"><div class="stat-icon">&#9989;</div><div class="stat-value" id="statActive">0</div><div class="stat-label">Actives</div></div>
+        <div class="stat-card"><div class="stat-icon">&#128683;</div><div class="stat-value" id="statBanned">0</div><div class="stat-label">Bannis</div></div>
+        <div class="stat-card"><div class="stat-icon">&#128200;</div><div class="stat-value" id="statLogs">0</div><div class="stat-label">Logs</div></div>
+      </section>
+
+      <section class="card">
+        <h2>Publier un script</h2>
+        <input type="text" id="scriptName" placeholder="Nom du script" required>
+        <textarea id="scriptDesc" placeholder="Description (optionnel)" rows="2"></textarea>
+        <label class="checkbox-row">
+          <input type="checkbox" id="scriptPublic">
+          <span>Rendre ce script public</span>
+        </label>
+        <div id="dropZone" class="drop-zone">
+          <div class="drop-icon">&#128193;</div>
+          <p>Glisse ton fichier .lua ici</p>
+          <p class="small">ou clique pour parcourir</p>
+          <input type="file" id="fileInput" accept=".lua,.txt" hidden>
+        </div>
+        <div id="fileInfo" class="file-info"></div>
+        <button id="publishBtn" class="btn-primary" disabled>Publier</button>
+        <div id="resultBox" class="result-box"></div>
+      </section>
+    </div>
+
+    <div class="page" id="page-scripts">
+      <section class="card" style="grid-column: 1 / -1;">
+        <h2>Mes scripts</h2>
+        <div id="scriptsList" class="scripts-list"><p class="small">Chargement...</p></div>
+      </section>
+    </div>
+
+    <div class="page" id="page-keys">
+      <section class="card" style="grid-column: 1 / -1;">
+        <h2>Gestion des cles</h2>
+        <div id="selectedScriptInfo" class="small" style="margin-bottom:15px;">
+          Selectionne un script dans l'onglet Scripts.
+        </div>
+
+        <div id="keyGenBox" style="display:none; margin-bottom:20px;">
+          <div class="key-gen-grid">
+            <input type="text" id="userLabel" placeholder="Label utilisateur">
+            <select id="keyType">
+              <option value="permanent">Permanente</option>
+              <option value="time">Temporaire (heures)</option>
+            </select>
+            <input type="number" id="keyHours" placeholder="Heures" min="1" step="0.5" value="24">
+            <input type="number" id="keyMaxUses" placeholder="Max utilisations (0 = infini)" min="0" value="0">
+            <button id="generateKeyBtn" class="btn-primary">Generer</button>
+          </div>
+        </div>
+
+        <div id="keysList" class="scripts-list"></div>
+      </section>
+    </div>
+
+    <div class="page" id="page-ban">
+      <section class="card" style="grid-column: 1 / -1;">
+        <h2>Bannir un utilisateur</h2>
+        <div class="ban-form">
+          <input type="text" id="banUserId" placeholder="ID Roblox du joueur">
+          <input type="text" id="banUserName" placeholder="Nom Roblox (optionnel)">
+          <input type="text" id="banReason" placeholder="Raison du ban">
+          <button id="banUserBtn" class="btn-danger">Bannir cet utilisateur</button>
+        </div>
+        <h2 style="margin-top:30px;">Utilisateurs bannis</h2>
+        <div id="bannedList" class="banned-list"></div>
+      </section>
+    </div>
+
+    <div class="page" id="page-logs">
+      <section class="card" style="grid-column: 1 / -1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h2 style="margin:0;">Logs d'execution</h2>
+          <button id="refreshLogsBtn" class="btn-ghost">Actualiser</button>
+        </div>
+        <div id="logsList" class="logs-list"><p class="small">Chargement...</p></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Auth - Script</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="script-page">
+  <div class="bg-animated"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="script-container">
+    <div class="script-card">
+      <div class="script-glow"></div>
+
+      <div class="script-header">
+        <div class="script-icon">&#128220;</div>
+        <h1 class="script-title" id="scriptName">Loading...</h1>
+        <p class="script-sub" id="scriptOwner">Script</p>
+      </div>
+
+      <div class="script-divider"></div>
+
+      <div class="script-info-grid">
+        <div class="info-item">
+          <div class="info-label">ID</div>
+          <div class="info-value" id="scriptId">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">STATUS</div>
+          <div class="info-value status-active" id="scriptStatus">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">EXECUTIONS</div>
+          <div class="info-value" id="scriptExec">0</div>
+        </div>
+      </div>
+
+      <div class="script-divider"></div>
+
+      <div id="descBox" style="display:none;">
+        <h3 style="font-size:13px;color:#888;margin-bottom:8px;letter-spacing:2px;">DESCRIPTION</h3>
+        <p id="scriptDesc" style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:20px;"></p>
+      </div>
+
+      <div class="loader-section">
+        <h3>&#128273; LOADER</h3>
+        <p class="loader-desc">Execute ce loader dans ton executor.</p>
+        <div class="loader-code" id="loaderCode">loadstring(game:HttpGet("..."))()</div>
+        <button class="btn-primary btn-full" id="copyLoaderBtn">&#128203; Copier le loader</button>
+      </div>
+
+      <div class="script-footer">
+        <span class="dot"></span>
+        <span>Protected by Nova Auth</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function initParticles() {
+      const container = document.getElementById("particles");
+      if (!container) return;
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.left = Math.random() * 100 + "%";
+        p.style.animationDuration = (Math.random() * 15 + 10) + "s";
+        p.style.animationDelay = (Math.random() * 10) + "s";
+        p.style.opacity = Math.random() * 0.5 + 0.2;
+        container.appendChild(p);
+      }
+    })();
+
+    const pathParts = window.location.pathname.split("/");
+    const scriptId = pathParts[pathParts.length - 1];
+
+    fetch("/api/script-info/" + scriptId)
+      .then(r => r.json())
+      .then(data => {
+        if (data.error) {
+          document.getElementById("scriptName").textContent = "Script introuvable";
+          return;
+        }
+        document.getElementById("scriptName").textContent = data.name;
+        document.getElementById("scriptOwner").textContent = "Par " + data.owner_name;
+        document.getElementById("scriptId").textContent = data.id;
+        document.getElementById("scriptStatus").textContent = data.is_public ? "PUBLIC" : "PRIVE";
+        document.getElementById("scriptExec").textContent = data.executions;
+
+        if (data.description) {
+          document.getElementById("descBox").style.display = "block";
+          document.getElementById("scriptDesc").textContent = data.description;
+        }
+
+        const loaderUrl = window.location.origin + "/api/loader/" + scriptId;
+        const loaderCode = 'loadstring(game:HttpGet("' + loaderUrl + '"))()';
+        document.getElementById("loaderCode").textContent = loaderCode;
+
+        document.getElementById("copyLoaderBtn").addEventListener("click", () => {
+          navigator.clipboard.writeText(loaderCode);
+          const btn = document.getElementById("copyLoaderBtn");
+          btn.textContent = "Copie !";
+          setTimeout(() => btn.innerHTML = "&#128203; Copier le loader", 1500);
+        });
+      });
+  </script>
+</body>
+</html>

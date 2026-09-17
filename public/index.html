@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Auth</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-animated"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <div class="card">
+      <div class="logo">&#128737;</div>
+      <h1>NOVA AUTH</h1>
+      <p class="subtitle">Authentification</p>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="login">Connexion</button>
+        <button class="tab" data-tab="register">Inscription</button>
+      </div>
+
+      <form id="loginForm" class="form active">
+        <input type="text" id="loginUser" placeholder="Nom d'utilisateur" required>
+        <input type="password" id="loginPass" placeholder="Mot de passe" required>
+        <button type="submit" class="btn-primary">Se connecter</button>
+      </form>
+
+      <form id="registerForm" class="form">
+        <input type="text" id="regUser" placeholder="Nom d'utilisateur (min 3)" required>
+        <input type="password" id="regPass" placeholder="Mot de passe (min 4)" required>
+        <button type="submit" class="btn-primary">Creer un compte</button>
+      </form>
+
+      <p id="message" class="message"></p>
+
+      <div class="public-link">
+        <a href="/public.html">Voir les scripts publics</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

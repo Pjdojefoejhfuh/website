@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Auth - Scripts Publics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-animated"></div>
+  <div class="particles" id="particles"></div>
+
+  <header class="topbar">
+    <div class="brand">&#128737; NOVA AUTH</div>
+    <div class="topbar-right">
+      <a href="/" class="btn-ghost" style="text-decoration:none;">Connexion</a>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="card" style="grid-column: 1 / -1;">
+      <h2>Scripts publics</h2>
+      <p class="small" style="color:#888;margin-bottom:20px;">Tous les scripts partages publiquement par la communaute.</p>
+      <div id="publicList" class="public-grid">
+        <p class="small">Chargement...</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    (function initParticles() {
+      const container = document.getElementById("particles");
+      if (!container) return;
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.left = Math.random() * 100 + "%";
+        p.style.animationDuration = (Math.random() * 15 + 10) + "s";
+        p.style.animationDelay = (Math.random() * 10) + "s";
+        p.style.opacity = Math.random() * 0.5 + 0.2;
+        container.appendChild(p);
+      }
+    })();
+
+    fetch("/api/public-scripts")
+      .then(r => r.json())
+      .then(data => {
+        const list = $("#publicList");
+        if (!data.length) {
+          list.innerHTML = '<p class="small" style="color:#666;">Aucun script public pour le moment.</p>';
+          return;
+        }
+        list.innerHTML = data.map(s =>
+          '<a href="/script/' + s.id + '" class="public-card">' +
+            '<div class="public-card-icon">&#128220;</div>' +
+            '<div class="public-card-name">' + s.name + '</div>' +
+            '<div class="public-card-desc">' + (s.description || 'Aucune description') + '</div>' +
+            '<div class="public-card-meta">' +
+              '<span>Par ' + s.owner_name + '</span>' +
+              '<span>' + s.executions + ' exec</span>' +
+            '</div>' +
+          '</a>'
+        ).join("");
+      })
+      .catch(() => {
+        $("#publicList").innerHTML = '<p class="small" style="color:#666;">Erreur de chargement.</p>';
+      });
+  </script>
+</body>
+</html>
